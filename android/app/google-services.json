@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1015085830270",
+    "project_id": "chico-ff",
+    "storage_bucket": "chico-ff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015085830270:android:593e1bcd5e7ec99a18c82f",
+        "android_client_info": {
+          "package_name": "com.example.chico_ff"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUPDzlp6ZEaZ8-Y5fgc4YT6KZR5yDFn0k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
