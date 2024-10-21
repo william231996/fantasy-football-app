@@ -23,7 +23,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
   Future getPlayers() async {
     var response = await http.get(
       Uri.https('api.balldontlie.io', 'v1/players'),
-      headers: {HttpHeaders.authorizationHeader: '48ecfd27-3b32-46c9-b02e-e0c5f02ab895'},
+      headers: {HttpHeaders.authorizationHeader: ''},
     );
 
     var jsonData = jsonDecode(response.body);
