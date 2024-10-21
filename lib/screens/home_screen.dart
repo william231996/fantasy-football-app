@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // API call
     var response = await http.get(
       Uri.https('api.balldontlie.io', 'v1/teams'),
-      headers: {HttpHeaders.authorizationHeader: '48ecfd27-3b32-46c9-b02e-e0c5f02ab895'},
+      headers: {HttpHeaders.authorizationHeader: ''},
     );
 
     var jsonData = jsonDecode(response.body); // store and convert json data to readable format
