@@ -19,4 +19,5 @@ class UserService {
   }
 }
 
-final userProvider = Provider<UserService>((ref) => UserService()); // entry point of shared data, shared state
+final userProvider = Provider<UserService>(
+    (ref) => UserService()); // entry point of shared data, shared state

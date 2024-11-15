@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:nba_app2/args/roster_page_args.dart';
 import 'package:nba_app2/navigation_menu.dart';
 import 'package:nba_app2/pages/home_page.dart';
+import 'package:nba_app2/pages/matchup_page.dart';
 import 'package:nba_app2/pages/roster_page.dart';
-import 'package:nba_app2/pages/team_page.dart';
+import 'package:nba_app2/pages/leagues_page.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -17,7 +18,7 @@ class RouteGenerator {
         // Validation of correct data type
         if (args is String) {
           return MaterialPageRoute(
-            builder: (_) => TeamPage(
+            builder: (_) => LeaguesPage(
               username: args,
             ),
           );
@@ -32,18 +33,19 @@ class RouteGenerator {
             ),
           );
         }
-
-        // if (args is RosterPageArguments){
-        //   return MaterialPageRoute(
-        //     builder: (_) => RosterPage(
-        //       leagueId: args.leagueId,
-        //       userId: args.userId,
-        //     ),
-        //   );
-        // }
         return _errorRoute(); // If args is not of the correct type, return an error page.
+      case '/matchup':
+        if (args is String) {
+          return MaterialPageRoute(
+            builder: (_) => MatchupPage(
+              leagueId: args,
+              userId: args,
+            ),
+          );
+        }
+        return _errorRoute();
       default:
-        return _errorRoute();  // If there is no such named route in the switch statement, e.g. /third
+        return _errorRoute(); // If there is no such named route in the switch statement, e.g. /third
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nba_app2/pages/matchup_page.dart';
 import 'package:nba_app2/pages/roster_page.dart';
 import 'package:nba_app2/providers/user_league_provider.dart';
 
@@ -34,13 +35,9 @@ class NavigationMenu extends StatelessWidget {
           index: currentIndex,
           children: [
             RosterPage(leagueId: leagueId, userId: userId),
-            Center(
-              child: Icon(
-                Icons.settings,
-                size: 100,
-              ),
-            ),
-            Center(
+            MatchupPage(leagueId: leagueId, userId: userId),
+            
+            const Center(
               child: Icon(
                 Icons.search,
                 size: 100,

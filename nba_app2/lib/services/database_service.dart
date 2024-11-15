@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nba_app2/models/sleeper_player.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -19,10 +20,6 @@ class DatabaseService {
   final String _playerLastNameColumnName = "last_name";
   final String _playerTeamColumnName = "team";
   final String _playerNumberColumnName = "number";
-  final String _playerPositionColumnName = "position";
-  final String _playerHeightColumnName = "height";
-  final String _playerWeightColumnName = "weight";
-  final String _playerAgeColumnName = "age";
 
   DatabaseService._constructor();
 
@@ -39,18 +36,15 @@ class DatabaseService {
 
     final database = await openDatabase(
       databasePath,
+      version: 1,
       onCreate: (db, version) {
         db.execute('''
         CREATE TABLE $_playersTableName (
-          $_playerIdColumnName INTEGER PRIMARY KEY,
+          $_playerIdColumnName TEXT PRIMARY KEY,
           $_playerFirstNameColumnName TEXT,
           $_playerLastNameColumnName TEXT,
           $_playerTeamColumnName TEXT,
-          $_playerNumberColumnName INTEGER,
-          $_playerPositionColumnName TEXT,
-          $_playerHeightColumnName TEXT,
-          $_playerWeightColumnName INTEGER,
-          $_playerAgeColumnName INTEGER
+          $_playerNumberColumnName INTEGER
         )
         ''');
       },
@@ -58,30 +52,37 @@ class DatabaseService {
     return database;
   }
 
-  Future getPlayers() async {
-    final response = await http.get(
-      Uri.https('api.sleeper.app', '/v1/players/nba'),
-    );
-    var jsonData = jsonDecode(response.body);
-    for (var eachPlayer in jsonData) {}
+  Future<void> insertPlayers(List<SleeperPlayer> players) async {
+    try {
+      final db = await database;
+      await db.transaction((txn) async {
+        for (var player in players) {
+          await txn.insert(
+            _playersTableName,
+            player.toMap(),
+            conflictAlgorithm: ConflictAlgorithm.replace,
+          );
+        }
+      });
+    } catch (e) {
+      print('An error occurred while inserting players: $e');
+    }
   }
 
-    void addPlayer(SleeperPlayer player) async {
+  Future<SleeperPlayer?> getPlayerById(String playerId) async {
     final db = await database;
-    await db.insert(
+    final List<Map<String, dynamic>> maps = await db.query(
       _playersTableName,
-      {
-        _playerIdColumnName: player.player_id,
-        _playerFirstNameColumnName: player.first_name,
-        _playerLastNameColumnName: player.last_name,
-        _playerTeamColumnName: player.team,
-        _playerNumberColumnName: player.number,
-        _playerPositionColumnName: player.position,
-        _playerHeightColumnName: player.height,
-        _playerWeightColumnName: player.weight,
-        _playerAgeColumnName: player.age,
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace,
+      where: '$_playerIdColumnName = ?',
+      whereArgs: [playerId],
     );
+    if (maps.isNotEmpty) {
+      return SleeperPlayer.fromJson(maps.first);
+    } else {
+      return null;
+    }
   }
+
 }
+
+final databaseServiceProvider = Provider<DatabaseService>((ref) => DatabaseService.instance);
