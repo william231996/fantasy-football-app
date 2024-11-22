@@ -1,13 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nba_app2/models/sleeper_player.dart';
-import 'package:nba_app2/providers/retrieve_all_player_provider.dart';
 import 'package:nba_app2/providers/database_provider.dart';
+import 'package:nba_app2/services/all_players_service.dart';
+
+final allPlayerServiceProvider = Provider<AllPlayerService>((ref) {
+  return AllPlayerService();
+});
 
 final playerDataInitializationProvider = FutureProvider<void>((ref) async {
   final playerService = ref.read(allPlayerServiceProvider);
   final databaseService = ref.read(databaseServiceProvider);
 
-  bool shouldFetch = await playerService.shouldFetchPlyaers();
+  bool shouldFetch = await playerService.shouldFetchPlayers();
 
   if (shouldFetch) {
     try {

@@ -84,5 +84,3 @@ class DatabaseService {
   }
 
 }
-
-final databaseServiceProvider = Provider<DatabaseService>((ref) => DatabaseService.instance);

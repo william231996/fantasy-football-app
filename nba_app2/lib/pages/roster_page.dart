@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:nba_app2/models/sleeper_player.dart';
 import 'package:nba_app2/models/sleeper_roster.dart';
-import 'package:nba_app2/providers/player_by_ID_provider.dart';
+import 'package:nba_app2/providers/database_provider.dart';
 import 'package:nba_app2/services/database_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nba_app2/args/roster_page_args.dart';

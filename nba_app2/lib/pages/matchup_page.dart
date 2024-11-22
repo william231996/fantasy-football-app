@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nba_app2/args/matchup_args.dart';
 import 'package:nba_app2/models/sleeper_player.dart';
+import 'package:nba_app2/providers/database_provider.dart';
 import 'package:nba_app2/providers/matchup_provider.dart';
-import 'package:nba_app2/providers/player_by_ID_provider.dart';
 import 'package:nba_app2/providers/roster_provider.dart';
 import 'package:nba_app2/providers/scroll_controller_provider.dart';
 import 'package:nba_app2/providers/season_details_provider.dart';
@@ -31,17 +31,15 @@ class MatchupPage extends ConsumerWidget {
         return rostersAsyncValue.when(
           data: (rosters) {
 
-
-            
             final myRoster = ref
                 .read(rosterServiceProvider)
                 .findRosterByUserId(rosters, userId);
             if (myRoster == null) {
               return const Center(child: Text('No roster found'));
             }
+
             final matchupsAsyncValue = ref.watch(matchupsProvider(
                 MatchupArgs(leagueId: leagueId, week: currentWeek)));
-
             return matchupsAsyncValue.when(
               data: (matchups) {
 
@@ -128,22 +126,6 @@ class MatchupPage extends ConsumerWidget {
                     body: Center(child: CircularProgressIndicator()),
                   );
                 }
-
-                // return Scaffold(
-                //   body: ListView(
-                //     children: [
-                //       ListTile(
-                //         title: Text('My Roster'),
-                //         subtitle: Text('Roster ID: ${myRoster.roster_id}'),
-                //       ),
-                //       ListTile(
-                //         title: Text('Opponent Roster'),
-                //         subtitle:
-                //             Text('Roster ID: ${opponentRoster.roster_id}'),
-                //       ),
-                //     ],
-                //   ),
-                // );
               },
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (error, stackTrace) => Text('Error: $error'),

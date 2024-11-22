@@ -25,7 +25,7 @@ class AllPlayerService {
   }
 
   // checks if more than 24 hours have passed since the last update
-  Future<bool> shouldFetchPlyaers() async {
+  Future<bool> shouldFetchPlayers() async {
     final prefs = await SharedPreferences.getInstance();
     final lastFetch = prefs.getInt(_lastUpdateKey);
 
