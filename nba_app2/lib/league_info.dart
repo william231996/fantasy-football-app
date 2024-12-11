@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nba_app2/pages/box_scores.dart';
+import 'package:nba_app2/pages/league_leaders.dart';
+import 'package:nba_app2/pages/standings.dart';
 
 final segmnetProvider = StateProvider<int>((ref) => 0);
 
@@ -12,6 +14,11 @@ class LeagueInfo extends ConsumerWidget {
     final selectedSegment = ref.watch(segmnetProvider);
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('League Info'),
+        backgroundColor: Colors.green,
+        elevation: 0.0,
+      ),
       body: Column(
         children: [
           // Segmented Button
@@ -56,30 +63,31 @@ class LeagueInfo extends ConsumerWidget {
 }
 
 Widget _buildContent(int selectedSegment) {
-
   switch (selectedSegment) {
     case 0:
       return BoxScoresPage();
-      // const Center(
-      //   child: Icon(
-      //     Icons.bike_scooter,
-      //     size: 100,
-      //   ),
-      // );
+    // const Center(
+    //   child: Icon(
+    //     Icons.bike_scooter,
+    //     size: 100,
+    //   ),
+    // );
     case 1:
-      return const Center(
-        child: Icon(
-          Icons.home_repair_service,
-          size: 100,
-        ),
-      );
+      return StandingsPage();
+    // return const Center(
+    //   child: Icon(
+    //     Icons.home_repair_service,
+    //     size: 100,
+    //   ),
+    // );
     case 2:
-      return const Center(
-        child: Icon(
-          Icons.catching_pokemon,
-          size: 100,
-        ),
-      );
+      return LeagueLeadersPage();
+    // return const Center(
+    //   child: Icon(
+    //     Icons.catching_pokemon,
+    //     size: 100,
+    //   ),
+    // );
     default:
       return const Center(child: Text('Select a segment'));
   }

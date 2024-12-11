@@ -9,6 +9,7 @@ import 'package:nba_app2/services/database_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nba_app2/args/roster_page_args.dart';
 import 'package:nba_app2/providers/roster_provider.dart';
+import 'package:nba_app2/widgets/season_averages_widget.dart';
 
 class RosterPage extends ConsumerWidget {
   final String leagueId;
@@ -23,7 +24,6 @@ class RosterPage extends ConsumerWidget {
 
     return userRosterAsyncValue.when(
       data: (userRosterData) {
-        print('Data state reached in roster page'); // checkpoint
         if (userRosterData == null) {
           return Scaffold(
             appBar: AppBar(
@@ -36,31 +36,77 @@ class RosterPage extends ConsumerWidget {
         }
 
         return Scaffold(
+          appBar: AppBar(
+            title: const Text('Roster'),
+            backgroundColor: Colors.green,
+            elevation: 0.0,
+          ),
           body: SafeArea(
             child: ListView.builder(
               itemCount: userRosterData.players.length,
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(5),
               itemBuilder: (context, index) {
                 final playerId = userRosterData.players[index];
-                final playerAsyncValue = ref.watch(playerByIdProvider(playerId));
+                final playerAsyncValue =
+                    ref.watch(playerByIdProvider(playerId));
 
                 return playerAsyncValue.when(
                   data: (player) {
                     if (player == null) {
                       return ListTile(
+                          title: Text('Player not found: $playerId'));
+                    }
+                    // print(
+                    //     'Player ${player.first_name} ${player.last_name} has bdl_player_id: ${player.bdl_player_id}');
+
+                    if (player == null) {
+                      return ListTile(
                         title: Text('Player not found: $playerId'),
                       );
                     }
+
                     return Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(4.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.greenAccent,
+                          color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: ListTile(
-                          title: Text('${player.first_name} ${player.last_name}'),
+                          title:
+                              Text('${player.first_name} ${player.last_name}'),
                           subtitle: Text('Team: ${player.team}'),
+                          trailing: const Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            if (player.bdl_player_id == null) {
+                              // No bdl_player_id? Show a simple dialog or snackbar
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text('No Data'),
+                                  content: Text(
+                                      'No balldontlie player id found for this player.'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text('OK'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            } else {
+                              // Show a dialog with season averages
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Dialog(
+                                    child: SeasonAveragesDialog(
+                                        bdlPlayerId: player.bdl_player_id!),
+                                  );
+                                },
+                              );
+                            }
+                          },
                         ),
                       ),
                     );

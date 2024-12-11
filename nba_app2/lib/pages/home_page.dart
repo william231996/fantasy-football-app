@@ -20,7 +20,12 @@ class _MyWidgetState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Page'),
+        title: const Padding(
+          padding: EdgeInsets.only(top: 20.0),
+          child: Text("Sleeper's NBA Fantasy Helper",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        ),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -41,6 +46,12 @@ class _MyWidgetState extends State<HomePage> {
                   icon: const Icon(Icons.search),
                 ),
               ),
+            ),
+            const SizedBox(height: 20),
+            Image.asset(
+              'images/sleeper_logo2.webp',
+              width: 400,
+              height: 400,
             ),
           ],
         ),

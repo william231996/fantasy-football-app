@@ -15,18 +15,16 @@ class NavigationMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // WidgetRef ref allows you to interact with the provider
-    print("Whole Page Built");
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Navigation Menu'),
-        backgroundColor: Colors.green,
-        elevation: 0.0,
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Navigation Menu'),
+      //   backgroundColor: Colors.green,
+      //   elevation: 0.0,
+      // ),
       body: Consumer(
           // whenever the provider gets updated, this widget (Consumer) will rebuild
           builder: (context, ref, child) {
-        print('Index Stack Built');
         final currentIndex = ref.watch(
             bottomNavIndexProvider); // By using ref.watch, this widget will rebuild whenever the provider updates
 
@@ -42,7 +40,6 @@ class NavigationMenu extends StatelessWidget {
       }),
       // whenever the provider gets updated, this widget (Consumer) will rebuild
       bottomNavigationBar: Consumer(builder: (context, ref, child) {
-        print('Bottom Nav Built');
         final currentIndex = ref.watch(
             bottomNavIndexProvider); // By using ref.watch, this widget will rebuild whenever the provider updates
         return NavigationBar(
